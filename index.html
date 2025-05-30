@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truly Desi - Employee Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: white;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #f8f8f8;
+            padding: 15px 0;
+            border-bottom: 1px solid #e7e7e7;
+        }
+        .logo {
+            height: 50px;
+        }
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            min-height: 80vh;
+            align-items: center;
+        }
+        .auth-box {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #e67e22;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #d35400;
+        }
+        .hidden {
+            display: none;
+        }
+        .survey-form {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+        }
+        .logout-btn {
+            background: #e74c3c;
+            width: auto;
+            padding: 8px 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <img src="Fresh Dairy.png" alt="Truly Desi" class="logo">
+                <div class="nav-links">
+                    <a href="#" id="adminLink" class="hidden">Admin</a>
+                    <a href="#" id="surveyLink" class="hidden">New Survey</a>
+                    <button id="logoutBtn" class="logout-btn hidden">Logout</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Login/Signup Section -->
+        <div class="auth-container" id="authContainer">
+            <div class="auth-box">
+                <h1>Employee Portal</h1>
+                <div id="loginForm">
+                    <h2>Login</h2>
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <button id="loginBtn">Login</button>
+                    <p style="text-align: center; margin-top: 15px;">Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+                </div>
+
+                <div id="signupForm" class="hidden">
+                    <h2>Create Account</h2>
+                    <input type="text" id="signupName" placeholder="Full Name" required>
+                    <input type="email" id="signupEmail" placeholder="Email" required>
+                    <input type="password" id="signupPassword" placeholder="Password (min 6 chars)" required>
+                    <button id="signupBtn">Create Account</button>
+                    <p style="text-align: center; margin-top: 15px;">Already have an account? <a href="#" id="showLogin">Login</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard (hidden by default) -->
+        <div id="adminDashboard" class="hidden">
+            <h1>Admin Dashboard</h1>
+            <div id="employeesList"></div>
+        </div>
+
+        <!-- Survey Form (hidden by default) -->
+        <div id="surveyDashboard" class="hidden">
+            <h1>Field Survey Form</h1>
+            <div class="survey-form">
+                <div class="form-group">
+                    <label for="areaName">Area Name</label>
+                    <input type="text" id="areaName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerName">Customer Name</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="sampleGiven">Sample Given</label>
+                    <select id="sampleGiven" required>
+                        <option value="">Select Sample</option>
+                        <option value="Cow Ghee">Cow Milk</option>
+                        <option value="Buffalo Ghee">Buffalo Milk</option>
+                        <option value="Honey">Buttermilk Small</option>
+                        <option value="Honey">Buttermilk Big</option>
+                        <option value="Mustard Oil">Kullad dahi</option>
+                        <option value="Other">Paneer</option>
+                        <option value="Other">Ghee 250 ML</option>
+                        <option value="Other">Ghee 500 ML</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Customer Phone Number</label>
+                    <input type="tel" id="customerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="interestLevel">Interest Level</label>
+                    <select id="interestLevel" required>
+                        <option value="">Select Interest</option>
+                        <option value="Immediate">Want to buy now</option>
+                        <option value="Later">Interested for later</option>
+                        <option value="Not Interested">Not interested</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="additionalNotes">Additional Notes</label>
+                    <textarea id="additionalNotes" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd;"></textarea>
+                </div>
+                <button id="submitSurvey">Submit Survey</button>
+            </div>
+            
+            <h2 style="margin-top: 40px;">Your Previous Surveys</h2>
+            <div id="previousSurveys"></div>
+        </div>
+    </div>
+
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFWtSh0qWBjQFsMM9uHA2ORIu1ldGwfrU",
+            authDomain: "truly-desi-employee.firebaseapp.com",
+            projectId: "truly-desi-employee",
+            storageBucket: "truly-desi-employee.firebasestorage.app",
+            messagingSenderId: "1052772448477",
+            appId: "1:1052772448477:web:78cd786bd7442bb81b0334",
+            measurementId: "G-BD5C210N3N"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const showSignup = document.getElementById('showSignup');
+        const showLogin = document.getElementById('showLogin');
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const authContainer = document.getElementById('authContainer');
+        const adminDashboard = document.getElementById('adminDashboard');
+        const surveyDashboard = document.getElementById('surveyDashboard');
+        const adminLink = document.getElementById('adminLink');
+        const surveyLink = document.getElementById('surveyLink');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const submitSurvey = document.getElementById('submitSurvey');
+        const previousSurveys = document.getElementById('previousSurveys');
+        const employeesList = document.getElementById('employeesList');
+
+        // Toggle between login and signup forms
+        showSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('hidden');
+            signupForm.classList.remove('hidden');
+        });
+
+        showLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            signupForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        });
+
+        // Signup function
+        signupBtn.addEventListener('click', () => {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const name = document.getElementById('signupName').value;
+            
+            // Create user with Firebase Auth
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Add user to Firestore
+                    return db.collection('employees').doc(userCredential.user.uid).set({
+                        name: name,
+                        email: email,
+                        role: 'employee', // Default role
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(() => {
+                    alert('Account created successfully! Please login.');
+                    signupForm.classList.add('hidden');
+                    loginForm.classList.remove('hidden');
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+
+        // Login function
+        loginBtn.addEventListener('click', () => {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Check user role
+                    return db.collection('employees').doc(userCredential.user.uid).get();
+                })
+                .then((doc) => {
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        localStorage.setItem('user', JSON.stringify({
+                            uid: doc.id,
+                            ...userData
+                        }));
+                        
+                        // Show appropriate dashboard based on role
+                        if (userData.role === 'admin') {
+                            showAdminDashboard();
+                            loadEmployees();
+                        } else {
+                            showSurveyDashboard();
+                            loadUserSurveys(doc.id);
+                        }
+                    } else {
+                        throw new Error('User data not found');
+                    }
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+
+        // Logout function
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                localStorage.removeItem('user');
+                hideAllDashboards();
+                authContainer.classList.remove('hidden');
+            });
+        });
+
+        // Submit survey
+        submitSurvey.addEventListener('click', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) return;
+            
+            const surveyData = {
+                areaName: document.getElementById('areaName').value,
+                customerName: document.getElementById('customerName').value,
+                sampleGiven: document.getElementById('sampleGiven').value,
+                customerPhone: document.getElementById('customerPhone').value,
+                interestLevel: document.getElementById('interestLevel').value,
+                additionalNotes: document.getElementById('additionalNotes').value,
+                employeeId: user.uid,
+                employeeName: user.name,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            db.collection('surveys').add(surveyData)
+                .then(() => {
+                    alert('Survey submitted successfully!');
+                    // Clear form
+                    document.getElementById('surveyForm').reset();
+                    // Reload surveys
+                    loadUserSurveys(user.uid);
+                })
+                .catch((error) => {
+                    alert('Error submitting survey: ' + error.message);
+                });
+        });
+
+        // Navigation links
+        adminLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showAdminDashboard();
+        });
+
+        surveyLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSurveyDashboard();
+        });
+
+        // Helper functions
+        function showAdminDashboard() {
+            hideAllDashboards();
+            adminDashboard.classList.remove('hidden');
+            adminLink.classList.remove('hidden');
+            surveyLink.classList.remove('hidden');
+            logoutBtn.classList.remove('hidden');
+            authContainer.classList.add('hidden');
+        }
+
+        function showSurveyDashboard() {
+            hideAllDashboards();
+            surveyDashboard.classList.remove('hidden');
+            surveyLink.classList.remove('hidden');
+            logoutBtn.classList.remove('hidden');
+            authContainer.classList.add('hidden');
+            
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.role === 'admin') {
+                adminLink.classList.remove('hidden');
+            }
+        }
+
+        function hideAllDashboards() {
+            adminDashboard.classList.add('hidden');
+            surveyDashboard.classList.add('hidden');
+            adminLink.classList.add('hidden');
+            surveyLink.classList.add('hidden');
+            logoutBtn.classList.add('hidden');
+        }
+
+        function loadUserSurveys(userId) {
+            previousSurveys.innerHTML = '<p>Loading your surveys...</p>';
+            
+            db.collection('surveys')
+                .where('employeeId', '==', userId)
+                .orderBy('createdAt', 'desc')
+                .get()
+                .then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        previousSurveys.innerHTML = '<p>No surveys submitted yet.</p>';
+                        return;
+                    }
+                    
+                    let html = '<div style="overflow-x:auto;"><table style="width:100%; border-collapse: collapse;"><tr><th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Date</th><th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Area</th><th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Customer</th><th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Sample</th><th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Interest</th></tr>';
+                    
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const date = data.createdAt ? data.createdAt.toDate().toLocaleString() : 'N/A';
+                        
+                        html += `
+                            <tr>
+                                <td style="padding:8px; border-bottom:1px solid #ddd;">${date}</td>
+                                <td style="padding:8px; border-bottom:1px solid #ddd;">${data.areaName}</td>
+                                <td style="padding:8px; border-bottom:1px solid #ddd;">${data.customerName}</td>
+                                <td style="padding:8px; border-bottom:1px solid #ddd;">${data.sampleGiven}</td>
+                                <td style="padding:8px; border-bottom:1px solid #ddd;">${data.interestLevel}</td>
+                            </tr>
+                        `;
+                    });
+                    
+                    html += '</table></div>';
+                    previousSurveys.innerHTML = html;
+                })
+                .catch((error) => {
+                    previousSurveys.innerHTML = `<p>Error loading surveys: ${error.message}</p>`;
+                });
+        }
+
+        function loadEmployees() {
+            employeesList.innerHTML = '<p>Loading employees...</p>';
+            
+            db.collection('employees').get()
+                .then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        employeesList.innerHTML = '<p>No employees found.</p>';
+                        return;
+                    }
+                    
+                    let html = '<div style="overflow-x:auto;"><table style="width:100%; border-collapse: collapse;"><tr><th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Name</th><th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Email</th><th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Role</th></tr>';
+                    
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        
+                        html += `
+                            <tr>
+                                <td style="padding:8px; border-bottom:1px solid #ddd;">${data.name}</td>
+                                <td style="padding:8px; border-bottom:1px solid #ddd;">${data.email}</td>
+                                <td style="padding:8px; border-bottom:1px solid #ddd;">${data.role}</td>
+                            </tr>
+                        `;
+                    });
+                    
+                    html += '</table></div>';
+                    employeesList.innerHTML = html;
+                })
+                .catch((error) => {
+                    employeesList.innerHTML = `<p>Error loading employees: ${error.message}</p>`;
+                });
+        }
+
+        // Check auth state on page load
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in
+                db.collection('employees').doc(user.uid).get()
+                    .then((doc) => {
+                        if (doc.exists) {
+                            const userData = doc.data();
+                            localStorage.setItem('user', JSON.stringify({
+                                uid: doc.id,
+                                ...userData
+                            }));
+                            
+                            if (userData.role === 'admin') {
+                                showAdminDashboard();
+                                loadEmployees();
+                            } else {
+                                showSurveyDashboard();
+                                loadUserSurveys(doc.id);
+                            }
+                        }
+                    });
+            } else {
+                // User is signed out
+                localStorage.removeItem('user');
+                hideAllDashboards();
+                authContainer.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
